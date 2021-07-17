@@ -1,5 +1,5 @@
 use std::env;
-use waypoint::{serv, send};
+use waypoint::*;
 
 fn main() -> std::io::Result<()> {
     let args = env::args();
@@ -9,12 +9,12 @@ fn main() -> std::io::Result<()> {
     match flag.as_str() {
         "serv" => {
             let address = args.next().unwrap_or("0.0.0.0:8888".to_string());
-            serv(address)?;
+            msg::msg::serv(address)?;
         }
         "send" => {
             let address = args.next().unwrap_or("127.0.0.1:8888".to_string());
             let buf = args.next().unwrap_or("没有输入字符串".to_string());
-            send(address, buf)?;
+            msg::msg::send(address, buf)?;
         }
         _ => println!("未识别的指令：{}！", flag)
     }
