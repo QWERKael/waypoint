@@ -7,10 +7,14 @@ pub fn serv(address: String) -> Result<(), Error> {
     for stream in listener.incoming() {
         let stream = stream?;
         let mut reader = BufReader::new(stream);
-        let buf = &mut [0;4096];
-        let size = reader.read(buf)?;
-        let s = String::from_utf8_lossy(buf);
-        println!("获取到 {} 的字符串：{}", size, s);
+        loop {
+            let buf = &mut [0;3];
+            let size = reader.read(buf)?;
+            let s = String::from_utf8_lossy(buf);
+            println!("获取到 {} bytes的字符串：{}", size, s);
+            if size < 3 { break; }
+        }
+        println!("获取完成！");
     }
     Ok(())
 }
